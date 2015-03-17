@@ -92,11 +92,13 @@ the entire application, but the controller's model may change
 throughout the lifetime of the application without requiring that
 the view knows anything about those mechanics.
 
+<aside>
 For example, if the user navigates from `/posts/1` to `/posts/2`,
 the `PostController` will change its model from `Post.find(1)` to
 `Post.find(2)`. The template will update its representations of any
 properties on the model, as well as any computed properties on the
 controller that depend on the model.
+</aside>
 
 This makes it easy to test a template in isolation by rendering it 
 with a controller object that contains the properties the template
@@ -117,7 +119,7 @@ proxies properties from an Array, and an `Ember.ObjectController`
 proxies properties from an object.
 
 If your controller is an `ArrayController`, you can iterate directly
-over the controller using `{{#each item in controller}}`. This keeps the
+over the controller using `{{#each controller}}`. This keeps the
 template from having to know about how the controller is implemented
 and makes isolation testing and refactoring easier.
 
@@ -128,9 +130,9 @@ server. Any time you need to store information only for the lifetime
 of this application run, you should store it on a controller.
 
 For example, imagine your application has a search field that
-is always present. You could store a `search` property on your
-`ApplicationController`, and bind the search field in the `
-application` template to that property, like this:
+is always present. You could store a `query` property on your
+`ApplicationController`, and bind the `search` field in the `
+application` template to that property.
 
 ```handlebars
 <!-- application.handlebars -->

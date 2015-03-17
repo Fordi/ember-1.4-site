@@ -12,8 +12,7 @@ with based on the name of the model. For example, if you ask for a
 `Post` by ID:
 
 ```js
-store.find('post', 1).then(function(post) {
-});
+var post = store.find('post', 1);
 ```
 
 The REST adapter will automatically send a `GET` request to `/posts/1`.
@@ -39,10 +38,8 @@ REST adapter:
 Irregular or uncountable pluralizations can be specified via `Ember.Inflector.inflector`:
 
 ```js
-var inflector = Ember.Inflector.inflector;
-
-inflector.irregular('formula', 'formulae');
-inflector.uncountable('advice');
+Ember.Inflector.inflector.irregular('formula', 'formulae');
+Ember.Inflector.inflector.uncountable('advice');
 ```
 
 This will tell the REST adapter that requests for `App.Formula` requests
@@ -54,7 +51,7 @@ Endpoint paths can be prefixed with a namespace by setting the `namespace`
 property on the adapter:
 
 ```js
-App.ApplicationAdapter = DS.RESTAdapter.extend({
+DS.RESTAdapter.reopen({
   namespace: 'api/1'
 });
 ```
@@ -66,7 +63,7 @@ Requests for `App.Person` would now target `/api/1/people/1`.
 An adapter can target other hosts by setting the `host` property.
 
 ```js
-App.ApplicationAdapter = DS.RESTAdapter.extend({
+DS.RESTAdapter.reopen({
   host: 'https://api.example.com'
 });
 ```
@@ -94,19 +91,6 @@ be nested inside a property called `person`:
 }
 ```
 
-_Note: Although after `destroyRecord` or `deleteRecord`/`save` the adapter expects an empty object e.g. `{}` to be returned from the server after destroying a record._
-
-If you don't have the option to change the data that the server responds with, you can override the 
-[DS.JSONSerializer#extractDeleteRecord](/api/data/classes/DS.JSONSerializer.html#method_extractDeleteRecord), like so:
-
-```js
-extractDeleteRecord: function(store, type, payload) {
-  // payload is {delete: true} and then ember data wants to go ahead and set
-  // the new properties, return null so it doesn't try to do that
-  return null;
-}
-```
-
 #### Attribute Names
 
 Attribute names should be camelized.  For example, if you have a model like this:
@@ -114,7 +98,7 @@ Attribute names should be camelized.  For example, if you have a model like this
 ```js
 App.Person = DS.Model.extend({
   firstName: DS.attr('string'),
-  lastName:  DS.attr('string'),
+  lastName: DS.attr('string'),
 
   isPersonOfTheYear: DS.attr('boolean')
 });
@@ -141,13 +125,11 @@ for the model and override the `normalizeHash` property.
 App.Person = DS.Model.extend({
   lastName: DS.attr('string')
 });
-
 App.PersonSerializer = DS.RESTSerializer.extend({
   normalizeHash: {
     lastNameOfPerson: function(hash) {
       hash.lastName = hash.lastNameOfPerson;
       delete hash.lastNameOfPerson;
-
       return hash;
     }
   }
@@ -256,7 +238,6 @@ App.CoordinatePointTransform = DS.Transform.extend({
     return Ember.create({ x: value[0], y: value[1] });
   }
 });
-
 App.Cursor = DS.Model.extend({
   position: DS.attr('coordinatePoint')
 });

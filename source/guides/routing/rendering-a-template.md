@@ -38,8 +38,8 @@ Ember allows you to name your outlets. For instance, this code allows
 you to specify two outlets with distinct names:
 
 ```handlebars
-<div class="toolbar">{{outlet "toolbar"}}</div>
-<div class="sidebar">{{outlet "sidebar"}}</div>
+<div class="toolbar">{{outlet toolbar}}</div>
+<div class="sidebar">{{outlet sidebar}}</div>
 ```
 
 So, if you want to render your posts into the `sidebar` outlet, use code
@@ -62,7 +62,7 @@ App.PostsRoute = Ember.Route.extend({
     var controller = this.controllerFor('favoritePost');
 
     // Render the `favoritePost` template into
-    // the outlet `posts`, and use the `favoritePost`
+    // the outlet `posts`, and display the `favoritePost`
     // controller.
     this.render('favoritePost', {
       outlet: 'posts',
@@ -78,8 +78,8 @@ If you want to render two different templates into outlets of two different rend
 App.PostRoute = App.Route.extend({
   renderTemplate: function() {
     this.render('favoritePost', {   // the template to render
-      into: 'posts',                // the template to render into
-      outlet: 'posts',              // the name of the outlet in that template
+      into: 'posts',                // the route to render into
+      outlet: 'posts',              // the name of the outlet in the route's template
       controller: 'blogPost'        // the controller to use for the template
     });
     this.render('comments', {

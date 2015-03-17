@@ -2,27 +2,21 @@
 # To have your pull request accepted, you must email listing@emberjs.com
 # with the subject line "Ember User Logo Contact". Please include the
 # name and email of a contact we can reach out to should we ever need
-# to make changes to this page or get logo variants. If you want to be nice,
-# add a link to the PR, so we don't have to go find it, too :p
+# to make changes to this page or get logo variants.
 
-# Please be sure the logo you upload has a transparent background,
-# and adequate whitespace so it's not crammed against the edges.
-
-# Please do not post links directly to pages selling Ember consulting
-# services. They will be removed.
+# Please also be sure the logo you upload has a transparent background,
+# and adequate whitespace.
 
 # These logos are in a particular order, most recently, that being the
 # order in which people made their requests. Be respectful to those who
 # came before you and add your name to the *bottom*.
 
-- url: http://www.mheducation.com/
+- url: http://www.mhelabs.com/
   image: mhelabs.png
 - url: https://www.yapp.us/
   image: yapp.png
 - url: http://tilde.io/
   image: tilde.png
-- url: http://www.bustle.com
-  image: bustle.png
 - url: http://yahoo.com
   image: yahoo.png
 - url: http://www.zendesk.com/
@@ -71,19 +65,27 @@
   image: nedap.png
 - url: http://www.brainistic.com
   image: brainistic.png
+- url: http://netminds.com/
+  image: netminds.png
+- url: http://mochaleaf.com
+  image: mochaleaf.png
 - url: http://kabisa.nl/
   image: kabisa.png
 - url: http://fundinggates.com
   image: fundinggates.png
 - url: http://witsbits.com
   image: witsbits.png
+- url: http://www.cliptem.com
+  image: cliptem.png
 - url: http://www.yesmail.com/services/market-intelligence-measurement/yesmail-market-intelligence
   image: yesmail.png
 - url: http://crashlog.io
   image: crashlog.png
+- url: http://plasmiq.com
+  image: plasmiq.png
 - url: http://www.toushay.com
   image: toushay.png
-- url:  http://shopittome.com/
+- url:  http://shopittome.com/threads
   image: shopittome_threads_logo_emberjs.png
 - url:  http://www.crowdstrike.com
   image: crowdstrike.png
@@ -97,10 +99,14 @@
   image: totango.png
 - url: http://www.nearzero.org
   image: nearzero.png
+- url: https://www.action.io/
+  image: actionio.png
 - url: http://porkepic.com/
   image: porkepic.png
 - url: http://www.appdrones.com/
   image: appdrones.png
+# - url: http://www.d-i.co/
+#   image: di-logo-blue.png —company contact info required, email listings@!
 - url: http://dockyard.com
   image: dockyard.png
 - url: http://www.montania.se/
@@ -151,9 +157,11 @@
   image: inthepocket.png
 - url: http://www.veriskhealth.com
   image: verisk_health.png
+- url: http://www.bustle.com
+  image: bustle.png
 - url: https://uniiverse.com
   image: uniiverse.gif
-- url: http://www.silveregg.com/
+- url: http://www.silveregg.nl
   image: silveregg.png
 - url: https://owner.urbanspoon.com
   image: urbanspoon.png
@@ -175,7 +183,7 @@
   image: neo.png
 - url: http://www.wanapi.com
   image: wanapi.png
-- url: http://edgycircle.com/
+- url: http://edgycircle.com/leistungen/emberjs-entwicklung-und-beratung/
   image: edgycircle.png
 - url: http://www.thoughtbot.com
   image: thoughtbot.png
@@ -199,7 +207,7 @@
   image: instructure.png
 - url: http://radflex.pt
   image: radflex.png
-- url: http://meetmantra.com
+- url: https://meetmantra.com
   image: mantra.png
 - url: http://www.runtastic.com
   image: runtastic.png
@@ -257,113 +265,6 @@
   image: unlockable.png
 - url: http://orchestrate.io
   image: orchestrate.png
-- url: http://www.aspireauctions.com
-  image: aspireauctions.png
-- url: http://planetargon.com/
-  image: planetargon.png
-- url: http://speedpos.com/
-  image: speedpos.png
-- url: http://selleo.com/
-  image: selleo.png
-- url: http://devmynd.com
-  image: devmynd.png
-- url: http://www.radiumcrm.com
-  image: radiumcrm.png
-- url: http://www.acentera.com
-  image: acentera.png
-- url: http://greenfieldhq.com
-  image: greenfield.png
-- url: http://typework.com
-  image: typework.png
-- url: https://garagesocial.com/ember-js
-  image: garagesocial.png
-- url: http://sush.io
-  image: sushio.png
-- url: http://www.hstry.co
-  image: hstry.png
-- url: http://www.netuitive.com
-  image: netuitive_ember_logo.png
-- url: http://www.thinkific.com
-  image: thinkific.png
-- url: http://app.getwashio.com/
-  image: washio.png
-- url: http://www.jebbit.com
-  image: jebbit.png
-- url: http://zing.co
-  image: zing.png
-- url: http://screenlight.tv
-  image: screenlight.png
-- url: http://www.navigator.ba
-  image: navigator.png
-- url: http://expresscheckoutapp.com
-  image: expresscheckout.png
-- url: https://www.pushmote.com
-  image: pushmote.png
-- url: http://echobind.com
-  image: echobind.png
-- url: https://idobata.io
-  image: idobata.png
-- url: http://closealert.com
-  image: closealert.png
-- url: https://www.export-to-china.com
-  image: exportToChina.png
-- url: https://www.tailorbrands.com
-  image: tailorBrands.png
-- url: https://www.skedda.com
-  image: skedda.png
-- url: http://poeticsystems.com
-  image: poetic.png
-- url: http://redowlanalytics.com
-  image: redowlanalytics.png
-- url: https://www.solvace.com
-  image: solvace.png
-- url: http://dlabs.si
-  image: dlabs.png
-- url: http://www.zenefits.com
-  image: zenefits.png
-- url: https://getpoynt.com
-  image: poynt.png
-- url: https://www.ted.com
-  image: ted.png
-- url: http://www.zybooks.com
-  image: zybooks.png
-- url: http://ghost.org
-  image: ghost.png
-- url: http://www.softlayer.com
-  image: softlayer.png
-- url: http://www.netural.com
-  image: netural.png
-- url: http://www.ticketfly.com/
-  image: ticketfly.png
-- url: http://www.dudamobile.com/
-  image: duda.png
-- url: https://www.bookingsync.com
-  image: bookingsync.png
-- url: https://www.hotdoc.com.au
-  image: hotdoc.png
-- url: http://www.xlab.si
-  image: xlab.png
-- url: https://www.netflix.com/
-  image: netflix.png
-- url: http://roomle.com
-  image: roomle.png
-- url: http://www.claroapps.com
-  image: claroapps.png
-- url: http://blimp.io
-  image: blimp.png
-- url: http://heroku.com/
-  image: heroku.png
-- url: http://www.kotive.com
-  image: kotive.png
-- url: http://gettinderbox.com/
-  image: tinderbox.png
-- url: http://www.checkmate.io
-  image: checkmate.png
-- url: http://www.microsoft.com
-  image: microsoft.png
-- url: https://www.intercom.io
-  image: intercom.png
-
 # ---- PLEASE READ ----
 # To have your pull request accepted, you must email listing@emberjs.com
 # with the subject line "Ember User Logo Contact". Please include the

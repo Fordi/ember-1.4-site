@@ -48,14 +48,17 @@ it from `all()` queries on the `store`. The deletion can then be persisted using
 Alternatively, you can use the `destroyRecord` method to delete and persist at the same time.
 
 ```js
-store.find('post', 1).then(function (post) {
-  post.deleteRecord();
-  post.get('isDeleted'); // => true
-  post.save(); // => DELETE to /posts/1
-});
+var post = store.find('post', 1);
+
+post.deleteRecord();
+
+post.get('isDeleted'); // => true
+
+post.save(); // => DELETE to /posts/1
 
 // OR
-store.find('post', 2).then(function (post) {
-  post.destroyRecord(); // => DELETE to /posts/2
-});
+
+var post = store.find('post', 2);
+
+post.destroyRecord(); // => DELETE to /posts/2
 ```

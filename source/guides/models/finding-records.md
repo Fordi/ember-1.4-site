@@ -26,12 +26,12 @@ It is an object that implements [`Ember.Enumerable`][1]. This is important
 because, for example, if you want to retrieve records by index, the `[]` notation
 will not work--you'll have to use `objectAt(index)` instead.
 
-[1]: /api/classes/Ember.Enumerable.html
+[1]: http://emberjs.com/api/classes/Ember.Enumerable.html
 
 ### Finding a Single Record
 
 If you provide a number or string as the second argument to `store.find()`,
-Ember Data will assume that you are passing in an ID and attempt to retrieve a record of the type passed in as the first argument with that ID. This will
+Ember Data will attempt to retrieve a record of that with that ID. This will
 return a promise that fulfills with the requested record:
 
 ```javascript
@@ -48,7 +48,7 @@ For example, we could search for all `person` models who have the name of
 `Peter`:
 
 ```javascript
-var peters = this.store.find('person', { name: "Peter" }); // => GET to /persons?name=Peter
+var peters = this.store.find('person', { name: "Peter" }); // => GET to /persons?name='Peter'
 ```
 
 ### Integrating with the Route's Model Hook
@@ -83,5 +83,5 @@ App.PostRoute = Ember.Route.extend({
   model: function(params) {
     return this.store.find('post', params.post_id);
   }
-});
+})
 ```

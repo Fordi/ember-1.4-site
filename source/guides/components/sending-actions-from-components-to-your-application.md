@@ -12,8 +12,8 @@ Bubbling](/guides/templates/actions/#toc_action-bubbling).
 
 Components are designed to be reusable across different parts of your
 application. In order to achieve this reusability, it's important that
-the actions that your components send can be specified when the component
-is used in a template.
+the actions that your components send be specified when the component is
+used in a template.
 
 In other words, if you were writing a button component, you would not
 want to send a `click` action, because it is ambiguous and likely to
@@ -49,7 +49,7 @@ App.MyButtonComponent = Ember.Component.extend({
   click: function() {
     this.sendAction();
   }
-});
+}
 ```
 
 In the above example, the `my-button` component will send the `showUser`
@@ -62,7 +62,7 @@ handling an action. For example, a button component may want to tell a
 controller not only that _an_ item was deleted, but also _which_ item.
 
 To send parameters with the primary action, call `sendAction()` with the
-string `'action'` as the first argument and any additional parameters
+string `"action"` as the first argument and any additional parameters
 following it:
 
 ```js
@@ -83,7 +83,7 @@ App.IndexRoute = Ember.Route.extend({
       }]
     };
   },
-
+  
   actions: {
     deleteTodo: function(todo) {
       var todos = this.modelFor('index').todos;
@@ -113,9 +113,9 @@ additional argument that the component user can specify:
 App.ConfirmButtonComponent = Ember.Component.extend({
   actions: {
     showConfirmation: function() {
-      this.toggleProperty('isShowingConfirmation');
+      this.toggleProperty('isShowingConfirmation'); 
     },
-
+    
     confirm: function() {
       this.toggleProperty('isShowingConfirmation');
       this.sendAction('action', this.get('param'));
@@ -125,8 +125,6 @@ App.ConfirmButtonComponent = Ember.Component.extend({
 ```
 
 ```handlebars
-{{! templates/components/confirm-button.handlebars }}
-
 {{#if isShowingConfirmation}}
   <button {{action "confirm"}}>Click again to confirm</button>
 {{else}}
@@ -138,8 +136,6 @@ Now we can update our initial template and replace the `{{action}}`
 helper with our new component:
 
 ```handlebars
-{{! index.handlebars }}
-
     {{#each todo in todos}}
       <p>{{todo.title}} {{confirm-button title="Delete" action="deleteTodo" param=todo}}</p>
     {{/each}}
@@ -149,7 +145,7 @@ Note that we've specified the action to send by setting the component's
 `action` attribute, and we've specified which argument should be sent as
 a parameter by setting the component's `param` attribute.
 
-<a class="jsbin-embed" href="http://jsbin.com/mucilo/embed?live">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="http://jsbin.com/atIgUSi/1/embed?live">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
 
 ### Sending Multiple Actions
 
@@ -173,7 +169,7 @@ In this case, you can send the `createUser` action by calling
 `this.sendAction('submit')`, or send the `cancelUserCreation` action by
 calling `this.sendAction('cancel')`.
 
-<a class="jsbin-embed" href="http://jsbin.com/qafaq/embed?live">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="http://jsbin.com/OpebEFO/1/embed?html,js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
 
 ### Actions That Aren't Specified
 
@@ -202,7 +198,7 @@ effect if the user clicks it:
 
 In general, you should think of component actions as translating a
 _primitive event_ (like a mouse click or an `<audio>` element's `pause`
-event) into actions that have meaning within your application.
+event) into actions that have semantic meaning in your application.
 
 This allows your routes and controllers to implement action handlers
 with names like `deleteTodo` or `songDidPause` instead of vague names

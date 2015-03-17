@@ -3,34 +3,29 @@ templates, loading data, and otherwise setting up application state.
 It does so by matching the current URL to the _routes_ that you've
 defined.
 
-The [map](http://emberjs.com/api/classes/Ember.Router.html#method_map) method
-of your Ember application's router can be invoked to define URL mappings. When
-calling `map`, you should pass a function that will be invoked with the value
-`this` set to an object which you can use to create
-[routes](http://emberjs.com/guides/routing/defining-your-routes/) and
-[resources](http://emberjs.com/guides/routing/defining-your-routes/#toc_resources).
-
-```javascript
+```js
 App.Router.map(function() {
-  this.route('about', { path: '/about' });
-  this.route('favorites', { path: '/favs' });
+  this.route("about", { path: "/about" });
+  this.route("favorites", { path: "/favs" });
 });
 ```
 
 Now, when the user visits `/about`, Ember.js will render the `about`
 template. Visiting `/favs` will render the `favorites` template.
 
+<aside>
 **Heads up!** You get a few routes for free: the `ApplicationRoute` and
 the `IndexRoute` (corresponding to the `/` path).
 [See below](#toc_initial-routes) for more details.
+</aside>
 
 Note that you can leave off the path if it is the same as the route
 name. In this case, the following is equivalent to the above example:
 
-```javascript
+```js
 App.Router.map(function() {
-  this.route('about');
-  this.route('favorites', { path: '/favs' });
+  this.route("about");
+  this.route("favorites", { path: "/favs" });
 });
 ```
 
@@ -58,7 +53,7 @@ subclass. For example, to customize what happens when your user visits
 App.IndexRoute = Ember.Route.extend({
   setupController: function(controller) {
     // Set the IndexController's `title`
-    controller.set('title', 'My App');
+    controller.set('title', "My App");
   }
 });
 ```
@@ -186,7 +181,7 @@ and `resource` template.
 
 Routes nested under a resource take the name of the resource plus their
 name as their route name. If you want to transition to a route (either
-via `transitionTo` or `{{#link-to}}`), make sure to use the full route
+via `transitionTo` or `{{#link-to}}`, make sure to use the full route
 name (`posts.new`, not `new`).
 
 Visiting `/` renders the `index` template, as you would expect.
@@ -205,10 +200,6 @@ specifying URLs for posts (a noun), the route was defined with
 `this.resource('posts')`. However, when defining the `new` action
 (a verb), the route was defined with `this.route('new')`.
 
-### Multi-word Model Names
-
-For multi-word models all the names are camel cased except for the dynamic segment. For example, a model named `BigMac` would have a resource path of `/bigMacs/:big_mac_id`, route named `bigMac`, template named `bigMac`.
-
 ### Dynamic Segments
 
 One of the responsibilities of a resource's route handler is to convert a URL
@@ -217,10 +208,10 @@ into a model.
 For example, if we have the resource `this.resource('posts');`, our
 route handler might look like this:
 
-```javascript
+```js
 App.PostsRoute = Ember.Route.extend({
   model: function() {
-    return this.store.find('post');
+    return this.store.find('posts');
   }
 });
 ```
@@ -238,7 +229,7 @@ Enter _dynamic segments_.
 A dynamic segment is a portion of a URL that starts with a `:` and is
 followed by an identifier.
 
-```javascript
+```js
 App.Router.map(function() {
   this.resource('posts');
   this.resource('post', { path: '/post/:post_id' });
@@ -274,7 +265,7 @@ App.Router.map(function() {
 App.PostRoute = Ember.Route.extend({
   model: function(params) {
     // the server returns `{ slug: 'foo-post' }`
-    return Ember.$.getJSON('/posts/' + params.post_slug);
+    return jQuery.getJSON("/posts/" + params.post_slug);
   },
 
   serialize: function(model) {
@@ -289,7 +280,7 @@ dynamic segment (in this case, `:post_id`).
 
 ### Nested Resources
 
-You can nest both routes and resources:
+You cannot nest routes, but you can nest resources:
 
 ```javascript
 App.Router.map(function() {
@@ -367,15 +358,12 @@ This router creates five routes:
   </table>
 </div>
 
+
 <small><sup>2</sup> `:post_id` is the post's id.  For a post with id = 1, the route will be:
 `/post/1`</small>
 
 The `comments` template will be rendered in the `post` outlet.
 All templates under `comments` (`comments/index` and `comments/new`) will be rendered in the `comments` outlet.
-
-The route, controller, and view class names for the comments resource are not prefixed with `Post`. Resources
-always reset the namespace, ensuring that the classes can be re-used between multiple parent resources and that
-class names don't get longer the deeper nested the resources are.
 
 You are also able to create deeply nested resources in order to preserve the namespace on your routes:
 
@@ -433,6 +421,7 @@ This router creates the following routes:
   </table>
 </div>
 
+
 ### Initial routes
 
 A few routes are immediately available within your application:
@@ -446,31 +435,3 @@ A few routes are immediately available within your application:
 
 Remember, these routes are part of every application, so you don't need to
 specify them in `App.Router.map`.
-
-### Wildcard / globbing routes
-
-You can define wildcard routes that will match multiple routes. This could be used, for example,
-if you'd like a catchall route which is useful when the user enters an incorrect URL not managed
-by your app.
-
-```javascript
-App.Router.map(function() {
-  this.route('catchall', {path: '/*wildcard'});
-});
-```
-
-Like all routes with a dynamic segment, you must provide a context when using a `{{link-to}}`
-or `transitionTo` to programatically enter this route.
-
-```javascript
-App.ApplicationRoute = Ember.Route.extend({
-  actions: {
-    error: function() {
-      this.transitionTo('catchall', 'application-error');
-    }
-  }
-});
-```
-
-With this code, if an error bubbles up to the Application route, your application will enter
-the `catchall` route and display `/application-error` in the URL.

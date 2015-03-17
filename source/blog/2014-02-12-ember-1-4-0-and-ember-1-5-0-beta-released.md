@@ -1,7 +1,7 @@
 ---
 title: Ember 1.4.0 and 1.5 Beta Released
 author: Robert Jackson
-tags: Releases
+tags: Releases, Recent Posts
 ---
 
 We are pleased to announce that both Ember.js 1.4.0 and the first beta in the 1.5 series

@@ -26,11 +26,11 @@ the controller.
 If your app provides an `App.ApplicationRoute`, Ember.js will invoke
 [the][1] [router's][2] [hooks][3] first, before rendering the
 `application` template. Hooks are implemented as methods and provide 
-you access points within an Ember object's lifecycle to intercept and 
+you access points within an Ember objects lifecycle to intercept and 
 execute code to modify the default behavior at these points to meet 
 your needs. Ember provides several hooks for you to utilize for various
 purposes (e.g. `model`, `setupController`, etc). In the example below 
-`App.ApplicationRoute`, which is an `Ember.Route` object, implements 
+`App.ApplicationRoute`, which is a `Ember.Route` object, implements 
 the `setupController` hook.
 
 [1]: /guides/routing/specifying-a-routes-model
@@ -68,7 +68,7 @@ your entire application shares a single instance of each controller.
 
 ## Simple Routes
 
-Each of your routes will have a controller, and a template with the 
+Each of your routes will have a controller and a template with the 
 same name as the route.
 
 Let's start with a simple router:
@@ -120,7 +120,7 @@ This has two major benefits:
 * You can replace the controller's model at any time without having
   to directly notify the view of the change.
 * The controller can provide additional computed properties or
-  view-specific states that do not belong in the model layer. This
+  view-specific state that do not belong in the model layer. This
   allows a clean separation of concerns between the view, the
   controller and the model.
 
@@ -128,15 +128,15 @@ The template can iterate over the elements of the controller:
 
 ```handlebars
 <ul>
-{{#each item in controller}}
-  <li>{{item.title}}</li>
+{{#each controller}}
+  <li>{{title}}</li>
 {{/each}}
 </ul>
 ```
 
 ## Dynamic Segments
 
-If a route uses a dynamic segment (a URL that includes a parameter), the route's model will be based
+If a route uses a dynamic segment, the route's model will be based
 on the value of that segment provided by the user.
 
 Consider this router definition:
@@ -179,9 +179,8 @@ handlers.
   application's namespace (`post` becomes `App.Post`). It will
   then call `find` on that class with the value of the dynamic
   segment.
-* The default behaviour of the `serialize` hook is to replace 
-  the route's dynamic segment with the value of the model 
-  object's `id` property.
+* The default `serialize` hook will pull the dynamic
+  segment with the `id` property of the model object.
 
 ## Route, Controller and Template Defaults
 

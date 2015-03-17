@@ -10,7 +10,7 @@ Todos.ApplicationAdapter = DS.LSAdapter.extend({
 });
 ```
 
-The local storage adapter, written by Ryan Florence, can be downloaded [from its source](https://raw.githubusercontent.com/kurko/ember-localstorage-adapter/c32477626ce0e7c8447e1ee79eb78e64a8357d70/localstorage_adapter.js). Add it to your project as `js/libs/localstorage_adapter.js`. You may place this file anywhere you like (even just putting all code into the same file), but this guide will assume you have created the file and named it as indicated.
+The local storage adapter, written by Ryan Florence, can be downloaded [from its source](https://raw.github.com/rpflorence/ember-localstorage-adapter/master/localstorage_adapter.js). Add it to your project as `js/libs/localstorage_adapter.js`. You may place this file anywhere you like (even just putting all code into the same file), but this guide will assume you have created the file and named it as indicated.
 
 In `index.html` include `js/libs/localstorage_adapter.js` as a dependency:
 
@@ -25,7 +25,7 @@ In `index.html` include `js/libs/localstorage_adapter.js` as a dependency:
 Reload your application. Todos you manage will now persist after the application has been closed.
 
 ### Live Preview
-<a class="jsbin-embed" href="http://jsbin.com/pewiki/1/embed?output">Ember.js • TodoMVC</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="http://jsbin.com/aZIXaYo/1/embed?live">Ember.js • TodoMVC</a><script src="http://static.jsbin.com/js/embed.js"></script>
 
 ### Additional Resources
 

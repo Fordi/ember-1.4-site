@@ -1,9 +1,49 @@
-//= require ember.debug
-//= require ember-template-compiler.js
-//= require moment
-//= require js-md5
+//= require ../../vendor/handlebars-1.2.1
+//= require ../../vendor/ember-1.3.1
+//= require ../../vendor/moment
 //= require ../../vendor/highlight
-//= require ./load-examples
+//= require ../../vendor/md5
+
+$(function loadExamples() {
+  // Find all of the examples on the page
+  var $examples = $('.example-app');
+
+  // For each example, create a new Ember.Application
+  $examples.each(function() {
+    var $viewer = $('<div class="example-viewer"></div>');
+    var $output = $('<div class="example-output"></div>');
+
+    $(this).append($viewer)
+           .append($output);
+
+    // Extract configuration options for the example
+    // from attributes on the element
+    var name = this.getAttribute('data-name'),
+        fileNames = this.getAttribute('data-files');
+
+    fileNames = fileNames.split(' ');
+
+    var files = fileNames.map(function(file) {
+      return $.ajax('/javascripts/app/examples/'+name+'/'+file, {
+        dataType: 'text'
+      });
+    });
+
+    Ember.RSVP.all(files).then(function(files) {
+      files = files.map(function(file, i) {
+        return {
+          name: fileNames[i],
+          contents: file
+        };
+      });
+
+      return files;
+    }).then(function(files) {
+      generateViewerApp($viewer, files);
+      generateOutputApp($output, files);
+    });
+  });
+});
 
 function buildLineNumbers(source) {
   var byLine = source.split("\n"),

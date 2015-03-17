@@ -96,23 +96,17 @@ window.App = Ember.Application.create({
 
 ## Ember Data
 
-#### View ember-data's type maps
+#### View ember-data's identity map
 
 ```javascript
-// all type maps in memory
-App.__container__.lookup('store:main').typeMaps 
+// all records in memory
+App.__container__.lookup('store:main').recordCache 
 
-// specific type map in memory
-App.__container__.lookup('store:main').typeMapFor(App.Color)
+// attributes
+App.__container__.lookup('store:main').recordCache[2].get('data.attributes')
 
-// map of id to record for all cached records for a type
-App.__container__.lookup('store:main').typeMapFor(App.Color).idToRecord
-
-// array of all cached records for a type
-App.__container__.lookup('store:main').typeMapFor(App.Color).records
-
-// grab a property off record id "33"
-App.__container__.lookup('store:main').typeMapFor(App.Color).idToRecord["33"].get('color')
+// loaded associations
+App.__container__.lookup('store:main').recordCache[2].get('comments')
 ```
 
 ## Observers / Binding
@@ -131,20 +125,6 @@ Ember.LOG_BINDINGS = true
 
 ## Miscellaneous
 
-#### Turn on resolver resolution logging
-
-This option logs all the lookups that are done to the console. Custom objects
-you've created yourself have a tick, and Ember generated ones don't.
-
-It's useful for understanding which objects Ember is finding when it does a lookup
-and which it is generating automatically for you.
-
-```javascript
-App = Ember.Application.create({
-  LOG_RESOLVER: true
-});
-```
-
 #### View an instance of something from the container
 
 ```javascript
@@ -160,17 +140,17 @@ Ember.LOG_STACKTRACE_ON_DEPRECATION = true
 ```
 
 
-#### Implement an Ember.onerror hook to log all errors in production
+#### Implement a `Ember.onerror` hook to log all errors in production
 
 ```javascript
 Ember.onerror = function(error) {
-  Ember.$.ajax('/error-notification', {
-    type: 'POST',
-    data: {
-      stack: error.stack,
-      otherInformation: 'exception message'
-    }
-  });
+    Em.$.ajax('/error-notification', {
+      type: 'POST',
+      data: {
+        stack: error.stack,
+        otherInformation: 'exception message'
+      }
+    });
 }
 ```
 
@@ -201,7 +181,7 @@ but a common practice is to call `console.assert` to dump the error to the
 console.
 
 ```javascript
-Ember.RSVP.on('error', function(error) {
+Ember.RSVP.configure('onerror', function(error) {
   Ember.Logger.assert(false, error);
 });
 ```

@@ -1,9 +1,9 @@
 Next we'll update the application so a user can navigate to a url where only todos that are not complete are displayed.
 
-In `index.html` convert the `<a>` tag for 'Active' todos into a Handlebars `{{link-to}}` helper and remove the active class from the `<a>` tag for 'All':
+In `index.html` convert the `<a>` tag for 'Active' todos into a Handlebars `{{link-to}}` helper:
 
 ```handlebars
-{{! ... additional lines truncated for brevity ... }}
+<!--- ... additional lines truncated for brevity ... -->
 <li>
   <a href="all">All</a>
 </li>
@@ -13,7 +13,7 @@ In `index.html` convert the `<a>` tag for 'Active' todos into a Handlebars `{{li
 <li>
   <a href="completed">Completed</a>
 </li>
-{{! ... additional lines truncated for brevity ... }}
+<!--- ... additional lines truncated for brevity ... -->
 ```
 
 In `js/router.js` update the router to recognize this new path and implement a matching route:
@@ -21,7 +21,7 @@ In `js/router.js` update the router to recognize this new path and implement a m
 ```javascript
 Todos.Router.map(function() {
   this.resource('todos', { path: '/' }, function() {
-    // additional child routes will go here later
+    // additional child routes    
     this.route('active');
   });
 });
@@ -46,7 +46,7 @@ Normally transitioning into a new route changes the template rendered into the p
 Reload your web browser to ensure that there are no errors and the behavior described above occurs.
 
 ### Live Preview
-<a class="jsbin-embed" href="http://jsbin.com/gaqey/1/embed?output">Ember.js • TodoMVC</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="http://jsbin.com/arITiZu/1/embed?live">Ember.js • TodoMVC</a><script src="http://static.jsbin.com/js/embed.js"></script>
 
 ### Additional Resources
 

@@ -2,9 +2,11 @@ To define a component, create a template whose name starts with
 `components/`. To define a new component, `{{blog-post}}` for example,
 create a `components/blog-post` template.
 
-**Note:** Components must have a dash in their name. So `blog-post` is an acceptable name,
-but `post` is not. This prevents clashes with current or future HTML element names, and
-ensures Ember picks up the components automatically.
+<aside>
+  **Note:** Components must have a dash in their name. So `blog-post` is an acceptable name,
+  but `post` is not. This prevents clashes with current or future HTML element names, and
+  ensures Ember picks up the components automatically.
+</aside>
 
 If you are including your Handlebars templates inside an HTML file via
 `<script>` tags, it would look like this:
@@ -25,12 +27,12 @@ component of the same name. Given the above template, you can now use the
 
 ```handlebars
 <h1>My Blog</h1>
-{{#each post in model}}
+{{#each}}
   {{blog-post}}
 {{/each}}
 ```
 
-<a class="jsbin-embed" href="http://jsbin.com/juvic/embed?js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="http://jsbin.com/ifuxey/1/embed?live,html">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
 
 Each component, under the hood, is backed by an element. By default
 Ember will use a `<div>` element to contain your component's template.

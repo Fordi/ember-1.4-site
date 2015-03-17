@@ -8,7 +8,7 @@ Inside `js/application.js` add the following code:
 window.Todos = Ember.Application.create();
 ```
 
-This will create a new instance of `Ember.Application` and make it available as a variable named `Todos` within your browser's JavaScript environment.
+This will create a new instance of `Ember.Application` and make it available as a variable within your browser's JavaScript environment.
 
 Inside `js/router.js` add the following code:
 
@@ -28,7 +28,7 @@ Next, update your `index.html` to wrap the inner contents of `<body>` in a Handl
   <script type="text/x-handlebars" data-template-name="todos">
 
     <section id="todoapp">
-      {{! ... additional lines truncated for brevity ... }}
+      ... additional lines truncated for brevity ...
     </section>
 
     <footer id="info">

@@ -12,7 +12,7 @@ to handle the main outlet and a modal outlet:
 
 ```handlebars
 {{outlet}}
-{{outlet 'modal'}}
+{{outlet modal}}
 ```
 
 Then you can render a controller and template into the `modal` outlet.  Sending
@@ -64,6 +64,5 @@ This example shows:
   1. Wrapping the common modal markup and actions in a component.
   1. Handling events to close the modal when the overlay is clicked.
 
-<a class="jsbin-embed" href="http://emberjs.jsbin.com/peyogo/2/embed?html,js,output">
-  Recipe: Using a Modal Dialog
-</a>
+<a class="jsbin-embed" href="http://emberjs.jsbin.com/iluLOto/1/embed?output">JS Bin</a>
+

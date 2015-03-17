@@ -14,11 +14,11 @@ idea that the W3C is currently working on the [Custom
 Elements](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html)
 spec.
 
-Ember's implementation of components hews as closely to the [Web
-Components specification](http://www.w3.org/TR/components-intro/) as possible.
-Once Custom Elements are widely available in browsers, you should be able to
-easily migrate your Ember components to the W3C standard and have them be
-usable by other frameworks.
+Ember's implementation of components hews as closely to the Web
+Components specification as possible. Once Custom Elements are widely
+available in browsers, you should be able to easily migrate your Ember
+components to the W3C standard and have them be usable by other
+frameworks.
 
 This is so important to us that we are working closely with the
 standards bodies to ensure our implementation of components matches the
@@ -29,4 +29,4 @@ To highlight the power of components, here is a short example of turning a blog 
 application. Keep reading this section for more details on building
 components.
 
-<a class="jsbin-embed" href="http://jsbin.com/juvic/embed?js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="http://jsbin.com/ifuxey/2/embed?live">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>

@@ -41,20 +41,6 @@ App.PostController = Ember.ObjectController.extend({
 });
 ```
 
-Note that actions may be attached to any element of the DOM, but not all
-respond to the `click` event. For example, if an action is attached to an `a`
-link without an `href` attribute, or to a `div`, some browsers won't execute
-the associated function. If it's really needed to define actions over such
-elements, a CSS workaround exists to make them clickable, `cursor: pointer`.
-For example:
-
-```css
-[data-ember-action] {
-  cursor: pointer;
-}
-```
-
-
 ### Action Bubbling
 
 By default, the `{{action}}` helper triggers a method on the template's
@@ -102,7 +88,6 @@ App.PostRoute = Ember.Route.extend({
       // ...
       if (actionShouldAlsoBeTriggeredOnParentRoute) {
         return true;
-      }
     }
   }
 });
@@ -137,7 +122,7 @@ For example, if the `post` argument was passed:
 <p><button {{action "select" post}}>✓</button> {{post.title}}</p>
 ```
 
-The controller's `select` action handler would be called with a single argument
+The route's `select` action handler would be called with a single argument
 containing the post model:
 
 ```js
@@ -221,7 +206,7 @@ is most commonly used to send actions to a view instead of a controller.
 
 ```handlebars
 <p>
-  <button {{action "select" post target=view}}>✓</button>
+  <button {{action "select" post target="view"}}>✓</button>
   {{post.title}}
 </p>
 ```
@@ -236,15 +221,4 @@ App.PostsIndexView = Ember.View.extend({
     }
   }
 });
-```
-
-Note that actions sent to views in this way do not bubble up the 
-currently rendered view hierarchy. If you want to handle the action in
-a parent view, use the following:
-
-```handlebars
-<p>
-  <button {{action "select" post target=view.parentView}}>✓</button>
-  {{post.title}}
-</p>
 ```

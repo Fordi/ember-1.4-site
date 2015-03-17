@@ -25,7 +25,7 @@ App.PhotosRoute = Ember.Route.extend({
 });
 ```
 
-<a class="jsbin-embed" href="http://jsbin.com/lihenu/embed?js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="http://jsbin.com/oLUTEd/1/embed?js">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
 
 ### Asynchronously Loading Models
 
@@ -68,7 +68,7 @@ While this example looks like it's synchronous, making it easy to read
 and reason about, it's actually completely asynchronous. That's because
 jQuery's `getJSON()` method returns a promise. Ember will detect the
 fact that you've returned a promise from the `model` hook, and wait
-until that promise resolves to render the `pullRequests` template.
+until that promise resolves to render the `pullRequest` template.
 
 (For more information on jQuery's XHR functionality, see
 [jQuery.ajax](http://api.jquery.com/jQuery.ajax/) in the jQuery
@@ -198,19 +198,6 @@ already provided and the hook is not executed. Routes without dynamic segments
 will always execute the model hook.
 
 [2]: /guides/templates/links
-
-
-### Refreshing your model
-
-If your data represented by your model is being updated frequently, you may
-want to refresh it periodically:
-
-<a class="jsbin-embed" href="http://jsbin.com/sefuv/2/embed?js">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
-
-The controller can send an action to the Route; in this example above, the
-IndexController exposes an action `getLatest` which sends the route an
-action called `invalidateModel`. Calling the route's `refresh` method will force
-Ember to execute the model hook again.
 
 
 ### Ember Data

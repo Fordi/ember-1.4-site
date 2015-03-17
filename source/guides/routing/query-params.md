@@ -1,22 +1,46 @@
-Query parameters are optional key-value pairs that appear to the right of
-the `?` in a URL. For example, the following URL has two query params,
-`sort` and `page`, with respective values `ASC` and `2`:
+In general, the dynamic segments of a URL are a serialized representation
+of a model, commonly for example the model's ID. However, sometimes you
+need to serialize other application state into the URL. This could be
+further parameters that affect the loading of the model from the server,
+e.g. what page of a result set you are viewing, or it could be
+information about client side state, e.g. sort order when the records
+are sorted on the client.
 
-    http://example.com/articles?sort=ASC&page=2
+There can also be more global information that you want to serialize into
+the url, for example if you want to store an auth token in the URL, or
+filter all models in your application globally. It's also possible that
+there are a lot of parameters that you want to serialize in the url that
+are inconvenient to store in normal dynamic segments. This might apply
+when you have a map view and need to store X, Y, and zoom coordinates
+along with a set of visible layers on the map. Although this is possible
+to do with dynamic segments, it can be inconvenient. For any of these use
+cases, you can consider using query params instead.
 
-Query params allow for additional application state to be serialized
-into the URL that can't otherwise fit into the _path_ of the URL (i.e.
-everything to the left of the `?`). Common use cases for query params include
-representing the current page, filter criteria, or sorting criteria.
+### Query Parameters are Controller-Driven
+
+Support for query parameters is built right into controllers, unlike
+other aspects of the URL which are specified and managed entirely at
+the router level. First class support for query params at the
+controller level allows for a simple yet powerful API for updating and
+responding to changes in query params without requiring the developer to
+manually install and manage bindings/observers to keep the URL and
+controller state in sync.
 
 ### Specifying Query Parameters
 
-Query params can be declared on route-driven controllers, e.g. to
-configure query params that are active within the `articles` route,
-they must be declared on `ArticlesController`.
+Query params can be specified by route-driven controllers. Recall that,
+given a route specified by `this.route('articles');`, the value resolved
+from the `ArticlesRoute`'s `model` hook will be loaded into
+`ArticlesController` as its `model` property. While `ArticlesRoute` has
+the option of loading data into different controllers in the
+`setupController` hook, `ArticlesController` is considered to be the
+"route-driven" controller in this case, and therefore has the ability to
+specify query params.
 
-**Note:** The controller associated with a given route can be changed
-by specifying the `controllerName` property on that route.
+<aside>
+  **Note:** The controller associated with a given route can be changed
+  by specifying the `controllerName` property on that route.
+</aside>
 
 Let's say we'd like to add a `category`
 query parameter that will filter out all the articles that haven't
@@ -37,7 +61,7 @@ once the `articles` route has been entered, any changes to the
 on `ArticlesController`, and vice versa.
 
 Now we just need to define a computed property of our category-filtered
-array that the `articles` template will render:
+array that `articles` template will render:
 
 ```js
 App.ArticlesController = Ember.ArrayController.extend({
@@ -49,7 +73,7 @@ App.ArticlesController = Ember.ArrayController.extend({
     var articles = this.get('model');
 
     if (category) {
-      return articles.filterBy('category', category);
+      return articles.filterProperty('category', category);
     } else {
       return articles;
     }
@@ -61,7 +85,7 @@ With this code, we have established the following behaviors:
 
 1. If the user navigates to `/articles`, `category` will be `null`, so
    the articles won't be filtered.
-2. If the user navigates to `/articles?category=recent`,
+2. If the user navigates to `/articles?articles[category]=recent`,
    `category` will be set to `"recent"`, so articles will be filtered.
 3. Once inside the `articles` route, any changes to the `category`
    property on `ArticlesController` will cause the URL to update the
@@ -75,7 +99,7 @@ The `link-to` helper supports specifying query params by way of the
 `query-params` subexpression helper.
 
 ```handlebars
-// Explicitly set target query params
+// Explicitly set target query para
 {{#link-to 'posts' (query-params direction="asc")}}Sort{{/link-to}}
 
 // Binding is also supported
@@ -83,17 +107,19 @@ The `link-to` helper supports specifying query params by way of the
 ```
 
 In the above examples, `direction` is presumably a query param property
-on the `PostsController`, but it could also refer to a `direction` property
+on `PostsController`, but it could also refer to a `direction` property
 on any of the controllers associated with the `posts` route hierarchy,
 matching the leaf-most controller with the supplied property name.
 
-**Note:** Subexpressions are only available in Handlebars 1.3
-or later.
+<aside>
+  **Note:** Subexpressions are only available in Handlebars 1.3
+  or later.
+</aside>
 
-The `link-to` helper takes into account query parameters when determining
+The link-to helper takes into account query parameters when determining
 its "active" state, and will set the class appropriately. The active state
-is determined by calculating whether the query params end up the same after
-clicking a link. You don't have to supply all of the current,
+is determined by working out if you clicked on the link, would the query
+params end up the same? You don't have to supply all of the current,
 active query params for this to be true.
 
 ### transitionTo
@@ -128,27 +154,24 @@ will the URL.
 
 But some query param changes necessitate loading data from the server,
 in which case it is desirable to opt into a full-on transition. To opt
-into a full transition when a controller query param property changes,
-you can use the optional `queryParams` configuration hash on the `Route`
-associated with that controller, and set that query param's
-`refreshModel` config property to `true`:
-
+into a full transition, you can provide a handler for the
+`queryParamsDidChange` action that calls `Route#refresh`, e.g.:
 
 ```js
 App.ArticlesRoute = Ember.Route.extend({
-  queryParams: {
-    category: {
-      refreshModel: true
-    }
-  },
   model: function(params) {
     // This gets called upon entering 'articles' route
-    // for the first time, and we opt into refiring it upon
-    // query param changes by setting `refreshModel:true` above.
+    // for the first time, and we opt in refiring it
+    // upon query param changes via `queryParamsDidChange` action
 
     // params has format of { category: "someValueOrJustNull" },
     // which we can just forward to the server.
     return this.store.findQuery('articles', params);
+  },
+  actions: {
+    queryParamsDidChange: function() {
+      this.refresh();
+    }
   }
 });
 
@@ -158,186 +181,60 @@ App.ArticlesController = Ember.ArrayController.extend({
 });
 ```
 
-### Update URL with `replaceState` instead
+`Route#refresh` is a general purpose method that essentially invalidates
+the data currently loaded into a route hierarchy, causing `model`
+hooks on the route you call it on (and any child routes) to refire. If
+the new models returned from the hooks are different from what was
+previously loaded, `setupController` hooks will refire as well, similar
+to what would happen when navigating between `/users/123` and
+`/users/456`.
 
-By default, Ember will use `pushState` to update the URL in the
-address bar in response to a controller query param property change, but
-if you would like to use `replaceState` instead (which prevents an
-additional item from being added to your browser's history), you can
-specify this on the `Route`'s `queryParams` config hash, e.g. (continued
-from the example above):
+In the case of query parameters, we can use `Route#refresh` to opt into
+a full transition in response to a query param change which otherwise
+would have only caused controller properties to update.
 
-```js
-App.ArticlesRoute = Ember.Route.extend({
-  queryParams: {
-    category: {
-      replace: true
-    }
-  }
-});
-```
+<aside>
+  **Note:** `Route#refresh` is general purpose, but resides behind the
+  `query-params-new` feature flag along with all of the API being
+  described by this guide.
+</aside>
 
-Note that the name of this config property and its default value of
-`false` is similar to the `link-to` helper's, which also lets
-you opt into a `replaceState` transition via `replace=true`.
+### "Stickiness"
 
-### Map a controller's property to a different query param key
+By default, query params are "sticky". This means that if you are on a
+url like `/posts?sort=name`, and you executed
+`transitionTo({queryParams: {direction: 'desc'}})` or clicked
+`{{#link-to 'posts' (query-params direction=desc)}}`, the resulting url will be
+`/posts?sort=name&direction=desc`.
 
-By default, specifying `foo` as a controller query param property will
-bind to a query param whose key is `foo`, e.g. `?foo=123`. You can also map
-a controller property to a different query param key using the
-following configuration syntax:
+To clear query params, give a falsy value, e.g.
+`transitionTo({queryParams: {direction: null}})` or
+`{{#link-to 'posts' (query-params direction=false)}}`
 
-```js
-App.ArticlesController = Ember.ArrayController.extend({
-  queryParams: {
-    category: "articles_category"
-  },
-  category: null
-});
-```
+### Boolean Query params
 
-This will cause changes to the `ArticlesController`'s `category`
-property to update the `articles_category` query param, and vice versa.
+Boolean query params are serialized without the truth value,
+e.g. `transitionTo('posts', {queryParams: {sort: true}})`
+would result in the url `/posts?sort`
 
-Note that query params that require additional customization can
-be provided along with strings in the `queryParams` array.
+This is for two reasons:
 
-```js
-App.ArticlesController = Ember.ArrayController.extend({
-  queryParams: [ "page", "filter", {
-    category: "articles_category"
-  }],
-  category: null,
-  page: 1,
-  filter: "recent"
-});
-```
-
-### Default values and deserialization
-
-In the following example, the controller query param property `page` is
-considered to have a default value of `1`.
-
-```js
-App.ArticlesController = Ember.ArrayController.extend({
-  queryParams: 'page',
-  page: 1
-});
-```
-
-This affects query param behavior in two ways:
-
-1. Query param values are cast to the same datatype as the default
-   value, e.g. a URL change from `/?page=3` to `/?page=2` will set
-   `ArticlesController`'s `page` property to the number `2`, rather than
-   the string `"2"`. The same also applies to boolean default values.
-2. When a controller's query param property is currently set to its
-   default value, this value won't be serialized into the URL. So in the
-   above example, if `page` is `1`, the URL might look like `/articles`,
-   but once someone sets the controller's `page` value to `2`, the URL
-   will become `/articles?page=2`.
-
-### Sticky Query Param Values
-
-By default, query param values in Ember are "sticky", in that if you
-make changes to a query param and then leave and re-enter the route, the
-new value of that query param will be preserved (rather than reset to
-its default). This is a particularly handy default for preserving sort/filter
-parameters as you navigate back and forth between routes.
-
-Furthermore, these sticky query param values are remembered/restored
-according to the model loaded into the route. So, given a `team` route
-with dynamic segment `/:team_name` and controller query param "filter",
-if you navigate to `/badgers` and filter by `"rookies"`, then navigate
-to `/bears` and filter by `"best"`, and then navigate to `/potatoes` and
-filter by `"lamest"`, then given the following nav bar links,
-
-```handlebars
-{{#link-to 'team' 'badgers' }}Badgers{{/link-to}}
-{{#link-to 'team' 'bears'   }}Bears{{/link-to}}
-{{#link-to 'team' 'potatoes'}}Potatoes{{/link-to}}
-```
-
-the generated links would be
-
-```html
-<a href="/badgers?filter=rookies">Badgers</a>
-<a href="/bears?filter=best">Bears</a>
-<a href="/potatoes?filter=lamest">Potatoes</a>
-```
-
-This illustrates that once you change a query param, it is stored and
-tied to the model loaded into the route.
-
-If you wish to reset a query param, you have two options:
-
-1. explicitly pass in the default value for that query param into
-   `link-to` or `transitionTo`
-2. use the `Route.resetController` hook to set query param values back to
-   their defaults before exiting the route or changing the route's model
-
-In the following example, the controller's `page` query param is reset
-to 1, _while still scoped to the pre-transition `ArticlesRoute` model_.
-The result of this is that all links pointing back into the exited route
-will use the newly reset value `1` as the value for the `page` query
-param.
-
-```js
-App.ArticlesRoute = Ember.Route.extend({
-  resetController: function (controller, isExiting, transition) {
-    if (isExiting) {
-      // isExiting would be false if only the route's model was changing
-      controller.set('page', 1);
-    }
-  }
-});
-```
-
-In some cases, you might not want the sticky query param value to be
-scoped to the route's model but would rather reuse a query param's value
-even as a route's model changes. This can be accomplished by setting the
-`scope` option to `"controller"` within the controller's `queryParams`
-config hash:
-
-```js
-App.ArticlesController = Ember.ArrayController.extend({
-  queryParams: [{
-    showMagnifyingGlass: {
-      scope: "controller"
-    }
-  }]
-});
-```
-
-The following demonstrates how you can override both the scope and the
-query param URL key of a single controller query param property:
-
-```js
-App.ArticlesController = Ember.Controller.extend({
-  queryParams: [ "page", "filter",
-    {
-      showMagnifyingGlass: {
-        scope: "controller",
-        as: "glass",
-      }
-    }
-  ]
-});
-```
+1. passing false is the way to clear query parameters
+2. The string "false" is truthy in javascript. i.e.
+`if ("false") { alert('oops'); }` will show an alert.
 
 ## Examples
 
-- [Search queries](http://jsbin.com/tukoye)
-- [Sort: client-side, no refiring of model hook](http://jsbin.com/joboje)
-- [Sort: server-side, refire model hook](http://jsbin.com/hiyalu)
-- [Pagination + Sorting](http://jsbin.com/fayug)
-- [Boolean values. False value removes QP from URL](http://jsbin.com/sisebi)
-- [Global query params on app route](http://jsbin.com/duhof)
-- [Opt-in to full transition via refresh()](http://jsbin.com/yanigu)
-- [update query params by changing controller QP property](http://jsbin.com/zerojo)
-- [update query params with replaceState by changing controller QP property](http://emberjs.jsbin.com/birugi)
-- [w/ {{partial}} helper for easy tabbing](http://jsbin.com/baguc)
-- [link-to with no route name, only QP change](http://jsbin.com/rujawi)
-- [Complex: serializing textarea content into URL (and subexpressions))](http://emberjs.jsbin.com/tudiz)
-- [Arrays](http://jsbin.com/gacihe)
+- [Search queries](http://emberjs.jsbin.com/ucanam/3008)
+- [Sort: client-side, no refiring of model hook](http://emberjs.jsbin.com/ucanam/2937)
+- [Sort: server-side, refire model hook](http://emberjs.jsbin.com/ucanam/2942)
+- [Pagination + Sorting](http://emberjs.jsbin.com/ucanam/2950)
+- [Boolean values. False value removes QP from URL](http://emberjs.jsbin.com/ucanam/2708/edit)
+- [Global query params on app route](http://emberjs.jsbin.com/ucanam/2719/edit)
+- [Opt-in to full transition via refresh()](http://emberjs.jsbin.com/ucanam/2711/edit)
+- [replaceUrl by changing controller QP property](http://emberjs.jsbin.com/ucanam/2710/edit)
+- [w/ {{partial}} helper for easy tabbing](http://emberjs.jsbin.com/ucanam/2706)
+- [link-to with no route name, only QP change](http://emberjs.jsbin.com/ucanam/2718#/about?about[showThing])
+- [Complex: serializing textarea content into URL (and subexpressions))](http://emberjs.jsbin.com/ucanam/2703/edit)
+- [Arrays](http://emberjs.jsbin.com/ucanam/2849)
+

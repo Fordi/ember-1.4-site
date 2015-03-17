@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-source 'https://rails-assets.org'
 
 gem "redcarpet"
 gem "activesupport"
@@ -12,14 +11,6 @@ gem "thin"
 gem "rack"
 gem "listen"
 gem "builder"
-gem "middleman-alias"
-gem "ember-middleman"
-gem "rails-assets-js-md5"
-gem "rails-assets-moment"
-gem "underscore-rails"
-gem "gmaps4rails"
-gem "geocoder"
-gem "faraday"
 
 group :development, :test do
   gem 'pry'
@@ -31,6 +22,3 @@ group :test do
   gem "poltergeist"
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin]
-gem 'wdm', '>= 0.1.0', platforms: [:mingw, :mswin]

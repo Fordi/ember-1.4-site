@@ -1,4 +1,4 @@
-Ember is made up of several libraries. If you wish to add a feature or fix a bug please file a pull request against the appropriate repository. Be sure to check the libraries listed below before making changes in the Ember.js repository.
+Ember is made up several libraries. If you wish to add a feature or fix a bug please file a pull request against the appropriate repository. Be sure to check the libraries listed below before making changes in the Ember.js repository.
 
 # Main Repositories
 **Ember.js** - The main repository for Ember.
@@ -9,7 +9,7 @@ Ember is made up of several libraries. If you wish to add a feature or fix a bug
 
 * [https://github.com/emberjs/data](https://github.com/emberjs/data)
 
-**Ember Website** - Source for [http://emberjs.com](http://emberjs.com) including these guides.
+**Ember Website** - Source for [http://www.emberjs.com](http://www.emberjs.com) including these guides.
 
 * [https://github.com/emberjs/website](https://github.com/emberjs/website)
 

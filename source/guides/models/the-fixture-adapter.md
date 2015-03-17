@@ -9,16 +9,18 @@ Using the fixture adapter entails three very simple setup steps:
 
 1. Create a new store using the fixture adapter and attach it to your app.
 2. Define your model using `DS.Model.extend`.
-3. Attach fixtures (also known as sample data) to the model's class.
+3. Attach fixtures(also known as sample data) to the model's class.
 
 #### Creating a Fixture Adapter
 
-Simply attach it as the `ApplicationAdapter` property on your instance
-of `Ember.Application`:
+Simply attach it to your instance of `Ember.Store`:
 
 ```JavaScript
 var App = Ember.Application.create();
-App.ApplicationAdapter = DS.FixtureAdapter;
+App.Store = DS.Store.extend({
+  revision: 13,
+  adapter: DS.FixtureAdapter
+});
 ```
 
 #### Define Your Model
@@ -36,16 +38,14 @@ App.Documenter = DS.Model.extend({
 
 #### Attach Fixtures to the Model Class
 
-In order to attach fixtures to your model, you have to use `reopenClass` method and define
-fixtures:
+Attaching fixtures couldn't be simpler. Just attach a collection of plain
+JavaScript objects to your Model's class under the `FIXTURES` property:
 
 ```JavaScript
-App.Documenter.reopenClass({
-  FIXTURES: [
-    { id: 1, firstName: 'Trek', lastName: 'Glowacki' },
-    { id: 2, firstName: 'Tom' , lastName: 'Dale'     }
-  ]
-});
+App.Documenter.FIXTURES = [
+  { id: 1, firstName: 'Trek', lastName: 'Glowacki' },
+  { id: 2, firstName: 'Tom' , lastName: 'Dale'     }
+];
 ```
 
 That's it! You can now use all of methods for [Finding Records][2] in your

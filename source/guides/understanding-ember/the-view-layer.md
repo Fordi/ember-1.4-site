@@ -16,7 +16,7 @@ Views and templates work in tandem to provide a robust system for creating whate
 
 #### Child Views
 
-In a typical client-side application, views may represent elements nested inside of each other in the DOM. In the naïve solution to this problem, separate view objects represent each DOM element, and ad-hoc references help the various view objects keep track of the views conceptually nested inside of them.
+In a typical client-side application, views may represent elements nested inside of each other in the DOM. In the naïve solution to this problem, separate view objects represent each DOM element, and ad-hoc references help the various view object keep track of the views conceptually nested inside of them.
 
 Here is a simple example, representing one main app view, a collection nested inside of it, and individual items nested inside of the collection.
 
@@ -108,7 +108,7 @@ In addition to children (Strings and other `RenderBuffer`s), a `RenderBuffer` al
 
 At the end of the rendering process, the root view asks the `RenderBuffer` for its element. The `RenderBuffer` takes its completed string and uses jQuery to convert it into an element. The view assigns that element to its `element` property and places it into the correct place in the DOM (the location specified in `appendTo` or the application's root element if the application used `append`).
 
-While the parent view assigns its element directly, each child view looks up its element lazily. It does this by looking for an element whose `id` matches its `elementId` property. Unless explicitly provided, the rendering process generates an `elementId` property and assigns its value to the view's `RenderBuffer`, which allows the view to find its element as needed.
+While the parent view assigns its element directly, each child views looks up its element lazily. It does this by looking for an element whose `id` matches its `elementId` property. Unless explicitly provided, the rendering process generates an `elementId` property and assigns its value to the view's `RenderBuffer`, which allows the view to find its element as needed.
 
 ##### 4. Re-Rendering
 
@@ -140,16 +140,15 @@ The process looks something like:
 As Ember renders a templated view, it will generate a view hierarchy. Let's assume we have a template `form`.
 
 ```handlebars
-{{view "search" placeholder="Search"}}
-{{#view view.buttonView}}Go!{{/view}}
+{{view App.Search placeholder="Search"}}
+{{#view Ember.Button}}Go!{{/view}}
 ```
 
 And we insert it into the DOM like this:
 
 ```javascript
 var view = Ember.View.create({
-  templateName: 'form',
-  buttonView: Ember.Button
+  templateName: 'form'
 }).append();
 ```
 
@@ -180,7 +179,7 @@ App.Search = Ember.View.extend({
 
 In order to make it easy to take action at different points during your view's lifecycle, there are several hooks you can implement.
 
-* `willInsertElement`: This hook is called after the view has been rendered, but before it has been inserted into the DOM. It does not provide access to the view's `element`.
+* `willInsertElement`: This hook is called after the view has been rendered but before it has been inserted into the DOM. It does not provide access to the view's `element`.
 * `didInsertElement`: This hook is called immediately after the view has been inserted into the DOM. It provides access to the view's `element` and is most useful for integration with an external library. Any explicit DOM setup code should be limited to this hook.
 * `willDestroyElement`: This hook is called immediately before the element is removed from the DOM. This is your opportunity to tear down any external state associated with the DOM node. Like `didInsertElement`, it is most useful for integration with external libraries.
 * `willClearRender`: This hook is called immediately before a view is re-rendered. This is useful if you want to perform some teardown immediately before a view is re-rendered.
@@ -211,15 +210,15 @@ For example, consider the following Handlebars template:
 
 ```handlebars
 <h1>Joe's Lamprey Shack</h1>
-{{restaurantHours}}
+{{controller.restaurantHours}}
 
-{{#view "fdaContactForm"}}
+{{#view App.FDAContactForm}}
   If you are experiencing discomfort from eating at Joe's Lamprey Shack,
 please use the form below to submit a complaint to the FDA.
 
-  {{#if allowComplaints}}
-    {{input value="complaint"}}
-    <button {{action "submitComplaint"}}>Submit</button>
+  {{#if controller.allowComplaints}}
+    {{view Ember.TextArea valueBinding="controller.complaint"}}
+    <button {{action 'submitComplaint'}}>Submit</button>
   {{/if}}
 {{/view}}
 ```
@@ -238,7 +237,7 @@ Handlebars expressions:
 </figure>
 
 From inside of the `TextArea`, the `parentView` would point to the
-`FdaContactForm` and the `FdaContactForm`'s `childViews` would be an
+`FDAContactForm` and the `FDAContactForm`'s `childViews` would be an
 array of the single `TextArea` view.
 
 You can see the internal view hierarchy by asking for the `_parentView`
@@ -253,7 +252,7 @@ console.log(_childViews.objectAt(0).toString());
 **Warning!** You may not rely on these internal APIs in application code.
 They may change at any time and have no public contract. The return
 value may not be observable or bindable. It may not be an Ember object.
-If you feel the need to use them, please contact us so we can expose a better
+If you feel the need to use them, please contact us so we can expose a better 
 public API for your use-case.
 
 Bottom line: This API is like XML. If you think you have a use for it,
@@ -324,9 +323,9 @@ App.ChildView = Ember.View.extend({
 And here's the Handlebars template that uses them:
 
 ```handlebars
-{{#view "grandparent"}}
-  {{#view "parent"}}
-    {{#view "child"}}
+{{#view App.GrandparentView}}
+  {{#view App.ParentView}}
+    {{#view App.ChildView}}
       <h1>Click me!</h1>
     {{/view}}
   {{/view}}
@@ -364,9 +363,9 @@ App.FormView = Ember.View.extend({
 ```
 
 ```handlebars
-{{#view "form"}}
-  {{input value=firstName}}
-  {{input value=lastName}}
+{{#view App.FormView}}
+  {{view Ember.TextField valueBinding="controller.firstName"}}
+  {{view Ember.TextField valueBinding="controller.lastName"}}
   <button type="submit">Done</button>
 {{/view}}
 ```
@@ -542,6 +541,10 @@ is automatically instantiated, if necessary, and added to the
 Standard Handlebars templates have the concept of a *context*--the
 object from which expressions will be looked up.
 
+Some helpers, like `{{#with}}`, change the context inside their block.
+Others, like `{{#if}}`, preserve the context. These are called
+"context-preserving helpers."
+
 When a Handlebars template in an Ember app uses an expression
 (`{{#if foo.bar}}`), Ember will automatically set up an
 observer for that path on the current context.
@@ -556,11 +559,20 @@ path as the context.
 {{#if controller.isAuthenticated}}
   <h1>Welcome {{controller.name}}</h1>
 {{/if}}
+
+{{#with controller.user}}
+  <p>You have {{notificationCount}} notifications.</p>
+{{/with}}
 ```
 
 In the above template, when the `isAuthenticated` property changes from
 false to true, Ember will render the block, using the original outer
 scope as its context.
+
+The `{{#with}}` helper changes the context of its block to the `user`
+property on the current controller. When the `user` property changes,
+Ember re-renders the block, using the new value of `controller.user` as
+its context.
 
 #### View Scope
 
@@ -589,10 +601,14 @@ App.MenuItemView = Ember.View.create({
 …and the following template:
 
 ```handlebars
-{{view.bulletText}} {{name}}
+{{#with controller}}
+  {{view.bulletText}} {{name}}
+{{/with}}
 ```
 
-You can still access the view's `bulletText` by referencing `view.bulletText`.
+Even though the Handlebars context has changed to the current
+controller, you can still access the view's `bulletText` by referencing
+`view.bulletText`.
 
 ### Template Variables
 
@@ -635,13 +651,15 @@ In this form, descendent context have access to the `person` variable,
 but remain in the same scope as where the template invoked the `each`.
 
 ```handlebars
-<h1>Title</h1>
-<ul>
-{{#each person in controller.people}}
-  {{! prefix here is controller.preferences.prefix }}
-  <li>{{prefix}}: {{person.fullName}}</li>
-{{/each}}
-<ul>
+{{#with controller.preferences}}
+  <h1>Title</h1>
+  <ul>
+  {{#each person in controller.people}}
+    {{! prefix here is controller.preferences.prefix }}
+    <li>{{prefix}}: {{person.fullName}}</li>
+  {{/each}}
+  <ul>
+{{/with}}
 ```
 
 Note that these variables inherit through `ContainerView`s, even though

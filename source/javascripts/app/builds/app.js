@@ -1,5 +1,3 @@
-//= require_tree ./templates
-
 var App = Ember.Application.create({
   rootElement: '#builds-application'
 });
@@ -112,16 +110,11 @@ App.S3Bucket = Ember.Object.extend({
     return this.get('files').length;
   }.property('files.@each'),
 
-  filterFiles: function(filter, ignoreFiles){
+  filterFiles: function(filter){
     var files = this.get('files');
-    var ignoreFiles = Ember.A(ignoreFiles);
 
     return files.filter(function(e) {
-      var name = e.get('name');
-      var ignored = ignoreFiles.any(function(f) { return name.indexOf(f) >= 0; });
-      var selected = name.indexOf(filter + '.') >= 0;
-
-      return !ignored && selected;
+      return e.get('name').indexOf(filter + '.') !== -1;
     });
   },
 
@@ -163,9 +156,9 @@ App.S3Bucket = Ember.Object.extend({
 
 App.S3File = Ember.Object.extend({
   scriptTag: function(){
-    var escapedURL = Ember.Handlebars.Utils.escapeExpression(this.get('url'));
+    var escapedURL = Handlebars.Utils.escapeExpression(this.get('url'));
 
-    return new Ember.Handlebars.SafeString('<script src="' + escapedURL + '"></script>').toString();
+    return new Handlebars.SafeString('<script src="' + escapedURL + '"></script>').toString();
   }.property('url'),
 
   url: function(){
@@ -191,54 +184,44 @@ App.Project.reopenClass({
       projectName: "Ember",
       projectFilter: "ember",
       projectRepo: 'emberjs/ember.js',
-      initialVersion: "1.10.0",
-      initialReleaseDate: "2015-02-07",
-      lastRelease: "1.10.0",
-      futureVersion: "1.10.1",
+      initialVersion: "1.4.0",
+      initialReleaseDate: "2014-02-14",
+      lastRelease: "1.4.0",
+      futureVersion: "1.4.1",
       channel: "release",
-      date: "2015-02-07",
-      changelogPath: "CHANGELOG.md",
-      enableTestURL: true,
-      debugFileName: ".debug.js"
+      date: "2014-02-14",
+      changelogPath: "CHANGELOG.md"
     }, {
       projectName: "Ember",
       projectFilter: "ember",
       projectRepo: 'emberjs/ember.js',
-      lastRelease: "1.11.0-beta.5",
-      futureVersion: "1.11.0",
-      finalVersion: '1.11.0',
+      lastRelease: "1.5.0-beta.1",
+      futureVersion: "1.5.0-beta.2",
+      finalVersion: '1.5.0',
       channel: "beta",
-      cycleEstimatedFinishDate: '2015-03-20',
-      date: "2015-03-08",
-      nextDate: "2015-03-20",
-      changelogPath: "CHANGELOG.md",
-      enableTestURL: true,
-      debugFileName: ".debug.js",
-      ignoreFiles: ['ember.js']
+      cycleEstimatedFinishDate: '2014-03-28',
+      date: "2014-02-14",
+      nextDate: "2014-02-21",
+      changelogPath: "CHANGELOG.md"
     }, {
       projectName: "Ember Data",
       projectFilter: "ember-data",
       projectRepo: 'emberjs/data',
-      lastRelease: "1.0.0-beta.15",
-      futureVersion: "1.0.0-beta.16",
+      lastRelease: "1.0.0-beta.6",
+      futureVersion: "1.0.0-beta.7",
       channel: "beta",
-      date: "2014-12-31",
-      changelogPath: "CHANGELOG.md",
-      debugFileName: ".js"
+      date: "2014-01-25",
+      changelogPath: "CHANGELOG.md"
     }, {
       projectName: "Ember",
       projectFilter: "ember",
       projectRepo: 'emberjs/ember.js',
       channel: "canary",
-      enableTestURL: true,
-      debugFileName: ".debug.js",
-      ignoreFiles: ['ember.js']
     }, {
       projectName: "Ember Data",
       projectFilter: "ember-data",
       projectRepo: 'emberjs/data',
       channel: "canary",
-      debugFileName: ".js"
     }],
 
   all: function(channel){
@@ -327,21 +310,16 @@ App.ProjectsMixin = Ember.Mixin.create({
         }
       }
 
-      project.files = bucket.filterFiles(project.projectFilter, project.ignoreFiles);
+      project.files = bucket.filterFiles(project.projectFilter);
       project.description = self.description(project);
-      project.lastReleaseDebugUrl = self.lastReleaseUrl(project.projectFilter, project.channel, project.lastRelease, project.debugFileName);
+      project.lastReleaseDebugUrl = self.lastReleaseUrl(project.projectFilter, project.channel, project.lastRelease, '.js');
       project.lastReleaseProdUrl  = self.lastReleaseUrl(project.projectFilter, project.channel, project.lastRelease, '.prod.js');
       project.lastReleaseMinUrl   = self.lastReleaseUrl(project.projectFilter, project.channel, project.lastRelease, '.min.js');
 
-      if (project.enableTestURL) {
-        project.lastReleaseTestUrl  = self.lastReleaseUrl(project.projectFilter, project.channel, project.lastRelease, '-tests-index.html');
-      }
-
-      if (project.channel === 'canary') {
+      if (project.channel === 'canary')
         project.lastRelease = 'latest';
-      } else if (project.changelog !== 'false') {
+      else if (project.changelog !== 'false')
         project.lastReleaseChangelogUrl   = 'https://github.com/' + project.projectRepo + '/blob/v' + project.lastRelease + '/' + project.changelogPath;
-      }
     });
 
     return projects;
@@ -362,7 +340,7 @@ App.ProjectsMixin = Ember.Mixin.create({
       value = 'The builds listed below are based on the most recent development.';
     }
 
-    return new Ember.Handlebars.SafeString(value);
+    return new Handlebars.SafeString(value);
   },
 
   lastReleaseUrl: function(project, channel, lastRelease, extension){
@@ -381,8 +359,8 @@ App.CanaryRoute = Ember.Route.extend(App.BuildCategoryMixin, {
   }
 });
 
-App.CanaryController = Ember.ObjectController.extend(App.ProjectsMixin, {
-  templateName: 'buildList',
+App.CanaryController = Ember.ObjectController.extend(App.ProjectsMixin, { 
+  templateName: 'buildList', 
   channel: 'canary'
 });
 
@@ -425,6 +403,10 @@ App.TaggedController = Ember.ObjectController.extend(App.ProjectsMixin, {
 /*
  * Handlebars Helpers
  */
+Ember.Handlebars.helper('format-bytes', function(bytes){
+  return (bytes / 1024).toFixed(2) + ' KB';
+});
+
 Ember.Handlebars.helper('format-date-time', function(date, format, options) {
   if (!options) {
     options = format;
@@ -436,4 +418,8 @@ Ember.Handlebars.helper('format-date-time', function(date, format, options) {
   } else {
     return moment(date).fromNow();
   }
+});
+
+Ember.Handlebars.helper('isHiDPIScreen', function() {
+  return window.getDevicePixelRatio() > 1;
 });

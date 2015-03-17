@@ -3,7 +3,7 @@ Next we'll update the application so a user can navigate to a url where only tod
 In `index.html` convert the `<a>` tag for 'Completed' todos into a Handlebars `{{link-to}}` helper:
 
 ```handlebars
-{{! ... additional lines truncated for brevity ... }}
+<!--- ... additional lines truncated for brevity ... -->
 <li>
   <a href="all">All</a>
 </li>
@@ -13,7 +13,7 @@ In `index.html` convert the `<a>` tag for 'Completed' todos into a Handlebars `{
 <li>
   {{#link-to "todos.completed" activeClass="selected"}}Completed{{/link-to}}
 </li>
-{{! ... additional lines truncated for brevity ... }}
+<!--- ... additional lines truncated for brevity ... -->
 ```
 
 In `js/router.js` update the router to recognize this new path and implement a matching route:
@@ -41,14 +41,14 @@ Todos.TodosCompletedRoute = Ember.Route.extend({
 });
 ```
 
-The model data for this route is the collection of todos whose `isCompleted` property is `true`. Just like we recently saw with the similar function for the active todos, changes to a todo's `isCompleted` property will automatically cause this collection to refresh, updating the UI accordingly.
+The model data for this route is the collection of todos whose `isCompleted` property is `true`. When a todo's `isCompleted` property changes this collection will automatically update to add or remove the todo appropriately.
 
-`TodosCompletedRoute` has a similar purpose to the active todos - to reuse the existing `todos/index` template, rather than having to create a new template.
+Normally transitioning into a new route changes the template rendered into the parent `{{outlet}}`, but in this case we'd like to reuse the existing `todos/index` template. We can accomplish this by implementing the `renderTemplate` method and calling `render` ourselves with the specific template and controller options.
 
 Reload your web browser to ensure that there are no errors and the behavior described above occurs.
 
 ### Live Preview
-<a class="jsbin-embed" href="http://jsbin.com/heviqo/1/embed?output">Ember.js • TodoMVC</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="http://jsbin.com/OzUvuPu/1/embed?live">Ember.js • TodoMVC</a><script src="http://static.jsbin.com/js/embed.js"></script>
 
 ### Additional Resources
 

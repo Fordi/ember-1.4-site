@@ -1,12 +1,12 @@
 Next we'll update our template to indicate when all todos have been completed. In `index.html` replace the static checkbox `<input>` with an `{{input}}`:
 
 ```handlebars
-{{! ... additional lines truncated for brevity ... }}
+<!--- ... additional lines truncated for brevity ... -->
 <section id="main">
   {{outlet}}
   {{input type="checkbox" id="toggle-all" checked=allAreDone}}
 </section>
-{{! ... additional lines truncated for brevity ... }}
+<!--- ... additional lines truncated for brevity ... -->
 ```
 
 This checkbox will be checked when the controller property `allAreDone` is `true` and unchecked when the property `allAreDone` is `false`.
@@ -16,8 +16,8 @@ In `js/controllers/todos_controller.js` implement the matching `allAreDone` prop
 ```javascript
 // ... additional lines truncated for brevity ...
 allAreDone: function(key, value) {
-  return !!this.get('length') && this.isEvery('isCompleted');
-}.property('@each.isCompleted'),
+  return !!this.get('length') && this.everyProperty('isCompleted', true);
+}.property('@each.isCompleted')
 // ... additional lines truncated for brevity ...
 ```
 

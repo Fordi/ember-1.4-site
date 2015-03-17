@@ -25,6 +25,9 @@ Ember.js provides several helpers that allow you to render other views and templ
   Written by Yehuda Katz
 </div>
 ```
+
+The partial's `data-template-name` must start with an underscore (e.g. `data-template-name='_author'` or `data-template-name='foo/_bar'`)
+
 ### The `{{view}}` Helper
 
 This helper works like the partial helper, except instead of providing a template to be rendered within the current template, you provide a view class.  The view controls what template is rendered.
@@ -50,7 +53,7 @@ App.AuthorView = Ember.View.extend({
 <script type="text/x-handlebars" data-template-name='post'>
   <h1>{{title}}</h1>
   <div>{{body}}</div>
-  {{view "author"}}
+  {{view App.AuthorView}}
 </script>
 ```
 
@@ -67,7 +70,7 @@ When using `{{partial "author"}}`:
 * No instance of App.AuthorView will be created
 * The given template will be rendered
 
-When using `{{view "author"}}`:
+When using `{{view App.AuthorView}}`:
 
 * An instance of App.AuthorView will be created
 * It will be rendered here, using the template associated with that view (the default template being "author")
@@ -106,8 +109,8 @@ Modifying the post / author example slightly:
 ```javascript
 App.AuthorController = Ember.ObjectController.extend({
   postCount: function() {
-    return this.get("model.posts.length");
-  }.property("model.posts.[]")
+    return App.Post.countForAuthor(this.get("model"));
+  }.property("model","App.Post.@each.author")
 })
 ```
 
@@ -190,7 +193,7 @@ Note: `{{render}}` cannot be called multiple times for the same route when not s
     <td><code>App.PostController</code></td>
   </tr>
   <tr>
-    <td><code>{{view "author"}}</code></td>
+    <td><code>{{view App.AuthorView}}</code></td>
     <td><code>author.hbs</code></td>
     <td>Post</td>
     <td><code>App.AuthorView</code></td>

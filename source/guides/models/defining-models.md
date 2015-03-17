@@ -3,13 +3,6 @@ data that you present to the user. Anything that the user expects to see
 if they leave your app and come back later (or if they refresh the page)
 should be represented by a model.
 
-Make sure to include `ember-data.js` after `ember.js`
-
-```html
-<script type="text/javascript" src="ember.js"></script>
-<script type="text/javascript" src="ember-data.js"></script>
-```
-
 For every model in your application, create a subclass of `DS.Model`:
 
 ```javascript
@@ -98,13 +91,8 @@ The default adapter supports attribute types of `string`,
 attribute types, and new types can be registered as transforms. See the
 [documentation section on the REST Adapter](/guides/models/the-rest-adapter).
 
-**Please note:** Ember Data serializes and deserializes dates according to
-                 [ISO 8601][]. For example: `2014-05-27T12:54:01`
-
-[ISO 8601]: http://en.wikipedia.org/wiki/ISO_8601
-
 #### Options
-`DS.attr` takes an optional hash as a second parameter:
+`DS.attr` takes an optional hash as a second parameter, current options are:
 
 - `defaultValue`: Pass a string or a function to be called to set the
                   attribute to a default value if none is supplied.
@@ -118,7 +106,7 @@ attribute types, and new types can be registered as transforms. See the
       username: attr('string'),
       email: attr('string'),
       verified: attr('boolean', {defaultValue: false}),
-      createdAt: attr('string', {
+      createdAt: DS.attr('string', {
           defaultValue: function() { return new Date(); }
       })
   });
@@ -207,30 +195,3 @@ App.Post = DS.Model.extend({
 ```
 
 You can also specify an inverse on a `belongsTo`, which works how you'd expect.
-
-#### Reflexive relation
-
-When you want to define a reflexive relation, you must either explicitly define
-the other side, and set the explicit inverse accordingly, and if you don't need the
-other side, set the inverse to null.
-
-```javascript
-var belongsTo = DS.belongsTo,
-    hasMany = DS.hasMany;
-
-App.Folder = DS.Model.extend({
-  children: hasMany('folder', {inverse: 'parent'}),
-  parent: belongsTo('folder', {inverse: 'children'})
-});
-```
-
-or
-
-```javascript
-var belongsTo = DS.belongsTo,
-
-App.Folder = DS.Model.extend({
-  parent: belongsTo('folder', {inverse: null})
-});
-```
-

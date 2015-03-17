@@ -1,15 +1,11 @@
-Next we'll update our static HTML `<input>` to an Ember view that can expose more complex behaviors.  Update `index.html` to replace the new todo `<input>` with an `{{input}}` helper:
+Next we'll update our static HTML `<input>` to an Ember view that can expose more complex behaviors.  Update `index.html` to replace the new todo `<input>` with a `{{input}}` helper:
 
 ```handlebars
-{{! ... additional lines truncated for brevity ... }}
+<!--- ... additional lines truncated for brevity ... -->
 <h1>todos</h1>
-{{input
-  type="text"
-  id="new-todo"
-  placeholder="What needs to be done?"
-  value=newTitle
-  action="createTodo"}}
-{{! ... additional lines truncated for brevity ... }}
+{{input type="text" id="new-todo" placeholder="What needs to be done?" 
+              value=newTitle action="createTodo"}}
+<!--- ... additional lines truncated for brevity ... -->
 ```
 
 This will render an `<input>` element at this location with the same `id` and `placeholder` attributes applied. It will also connect the `newTitle` property of this template's controller to the `value` attribute of the `<input>`. When one changes, the other will automatically update to remain synchronized.
@@ -61,7 +57,7 @@ In `index.html` include `js/controllers/todos_controller.js` as a dependency:
 Reload your web browser to ensure that all files have been referenced correctly and no errors occur. You should now be able to add additional todos by entering a title in the `<input>` and hitting the `<enter>` key.
 
 ### Live Preview
-<a class="jsbin-embed" href="http://jsbin.com/cobuzo/1/embed?output">Ember.js • TodoMVC</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="http://jsbin.com/ImukUZO/1/embed?live">Ember.js • TodoMVC</a><script src="http://static.jsbin.com/js/embed.js"></script>
 
 ### Additional Resources
 

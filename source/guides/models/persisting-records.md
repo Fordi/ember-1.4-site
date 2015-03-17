@@ -13,13 +13,13 @@ post.save(); // => POST to '/posts'
 ```
 
 ```javascript
-store.find('post', 1).then(function (post) {
-  post.get('title'); // => "Rails is Omakase"
+var post = store.find('post', 1);
 
-  post.set('title', 'A new post');
+post.get('title') // => "Rails is Omakase"
 
-  post.save(); // => PUT to '/posts/1'
-});
+post.set('title', 'A new post');
+
+post.save(); // => PUT to '/posts/1'
 ```
 
 ### Promises
@@ -57,10 +57,8 @@ var post = store.createRecord('post', {
   body: 'Lorem ipsum'
 });
 
-var self = this;
-
 var onSuccess = function(post) {
-  self.transitionToRoute('posts.show', post);
+  this.transitionToRoute('posts.show', post);
 };
 
 var onFail = function(post) {
@@ -79,7 +77,7 @@ example showing how to retry persisting:
 ```javascript
 function retry(callback, nTimes) {
   // if the promise fails
-  return callback().catch(function(reason) {
+  return callback().fail(function(reason) {
     // if we haven't hit the retry limit
     if (nTimes-- > 0) {
       // retry again with the result of calling the retry callback

@@ -32,8 +32,8 @@ its parent `PostController`, which can be done via `controllers.post`
 <h1>Comments for {{controllers.post.title}}</h1>
 
 <ul>
-  {{#each comment in comments}}
-    <li>{{comment.text}}</li>
+  {{#each comments}}
+    <li>{{text}}</li>
   {{/each}}
 </ul>
 ```
@@ -49,17 +49,5 @@ App.CommentsController = Ember.ArrayController.extend({
 });
 ```
 
-
-If you want to connect multiple controllers together, you can specify an
-array of controller names:
-
-```javascript
-App.AnotherController = Ember.Controller.extend({
-  needs: ['post', 'comments']
-});
-```
-
-For more information about dependecy injection and `needs` in Ember.js,
-see the [dependency injection guide](/guides/understanding-ember/dependency-injection-and-service-lookup).
-For more information about aliases, see the API docs for
-[aliased properties](/api/#method_computed_alias).
+For more information about aliased property, see the API docs for
+[aliased properties](http://emberjs.com/api/#method_computed_alias).

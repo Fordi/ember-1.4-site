@@ -12,7 +12,7 @@ generated within the application, like a list of comments.
 
 ## Discussion
 
-<a class="jsbin-embed" href="http://jsbin.com/somosocuni/1/embed?output">
+<a class="jsbin-embed" href="http://jsbin.com/iLETUTI/17/embed?output">
 Cookbook: Continuous Redrawing of Views
 </a><script src="http://static.jsbin.com/js/embed.js"></script>
 
@@ -96,15 +96,14 @@ App.CommentItemController = Ember.ObjectController.extend({
 });
 
 App.CommentsController = Ember.ArrayController.extend({
+  needs: ['interval'],
   itemController: 'commentItem',
-  comment: null,
   actions: {
     add: function () {
       this.addObject(Em.Object.create({
-        comment: this.get('comment'),
+        comment: $('#comment').val(),
         clock: ClockService.create()
       }));
-      this.set('comment', null);
     }
   }
 });
@@ -129,31 +128,29 @@ has a few properties to select a component to render, `fullSecond`,
 {{#if threeQuarterSecond}}
   {{nyan-middle}}
 {{/if}}
-<h3>You&apos;ve nyaned for {{digital-clock seconds}} (h:m:s)</h3>
+<h3>You&apos;ve nyaned for {{digital_clock seconds}} (h:m:s)</h3>
 {{render 'comments'}}
 ```
 
 A template for a list of comments
 
 ```handlebars
-<form {{action "add" on="submit"}}>
-  {{input value=comment}}
-  <button>Add Comment</button>
-</form>
+<input type="text" id="comment" />
+<button {{action 'add'}}>Add Comment</button>
 <ul>
-{{#each item in this}}
-  <li>{{item.comment}} ({{digital-clock item.seconds}})</li>
-{{/each}}
+  {{#each}}
+    <li>{{comment}} ({{digital_clock clock.pulse}})</li>
+  {{/each}}
 </ul>
 ```
 
 ### Handlebars helper to format the clock display (h:m:s)
 
-This helper is used in the template like so `{{digital-clock seconds}}`,
+This helper is used in the template like so `{{digital_clock seconds}}`,
 `seconds` is the property of the controller that will be displayed (h:m:s).
 
 ```javascript
-Ember.Handlebars.registerBoundHelper('digital-clock', function(seconds) {
+Ember.Handlebars.registerBoundHelper('digital_clock', function(seconds) {
   var h = Math.floor(seconds / 3600);
   var m = Math.floor((seconds % 3600) / 60);
   var s = Math.floor(seconds % 60);
@@ -181,14 +178,15 @@ after waking.
 
 The source code:
 
-* <http://jsbin.com/somosocuni/1/edit?html,js,output>
+* <http://jsbin.com/iLETUTI/17/edit?html,js,output>
 
 Further reading:
 
-* [Ember Object](/api/classes/Ember.Object.html)
-* [Ember Application Initializers](/api/classes/Ember.Application.html#toc_initializers)
-* [Method Inject](/api/classes/Ember.Application.html#method_inject)
-* [Conditionals](/guides/templates/conditionals/)
-* [Writing Helpers](/guides/templates/writing-helpers/)
-* [Defining a Component](/guides/components/defining-a-component/)
-* [Ember Array Controller](/api/classes/Ember.ArrayController.html)
+* <http://emberjs.com/api/classes/Ember.Object.html>
+* <http://emberjs.com/api/classes/Ember.Application.html>, See section on
+  "Initializers"
+* <http://emberjs.com/api/classes/Ember.Application.html#method_inject>
+* <http://emberjs.com/guides/templates/conditionals/>
+* <http://emberjs.com/guides/templates/writing-helpers/>
+* <http://emberjs.com/guides/components/defining-a-component/>
+* <http://emberjs.com/api/classes/Ember.ArrayController.html>

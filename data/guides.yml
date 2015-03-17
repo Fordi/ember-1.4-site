@@ -98,6 +98,8 @@ Templates:
     url: "templates/conditionals"
   - title: "Displaying a List of Items"
     url: "templates/displaying-a-list-of-items"
+  - title: "Changing Scope"
+    url: "templates/changing-scope"
   - title: "Binding Element Attributes"
     url: "templates/binding-element-attributes"
   - title: "Binding Element Class Names"
@@ -136,6 +138,7 @@ Routing:
     url: "routing/specifying-the-location-api"
   - title: "Query Parameters"
     url: "routing/query-params"
+    warning: "query-params-warning"
   - title: "Asynchronous Routing"
     url: "routing/asynchronous-routing"
   - title: "Loading / Error Substates"
@@ -194,16 +197,10 @@ Models:
     #url: "models/filtering-records"
   - title: "Working with Records"
     url: "models/working-with-records"
-  - title: "Using Fixtures"
-    url: "models/the-fixture-adapter"
-  - title: "The Rest Adapter"
-    url: "models/the-rest-adapter"
   - title: "Connecting to an HTTP Server"
     url: "models/connecting-to-an-http-server"
   - title: "Handling Metadata"
     url: "models/handling-metadata"
-  - title: "Customizing Adapters"
-    url: "models/customizing-adapters"
   - title: "Frequently Asked Questions"
     url: "models/frequently-asked-questions"
 
@@ -232,34 +229,8 @@ Enumerables:
     url: "enumerables"
 
 Testing:
-  - title: "Introduction"
-    url: "testing"
-  - title: "Integration Tests"
+  - title: "Integration Testing"
     url: "testing/integration"
-  - title: "Test Helpers"
-    url: "testing/test-helpers"
-  - title: "Testing User Interaction"
-    url: "testing/testing-user-interaction"
-  - title: "Unit Testing Basics"
-    url: "testing/unit-testing-basics"
-  - title: "Unit Test Helpers"
-    url: "testing/unit-test-helpers"
-  - title: "Testing Components"
-    url: "testing/testing-components"
-  # - title: "Testing Handlebars Helpers"
-  #   url: "testing/testing-handlebars-helpers"
-  - title: "Testing Controllers"
-    url: "testing/testing-controllers"
-  - title: "Testing Routes"
-    url: "testing/testing-routes"
-  # - title: "Testing Views"
-  #   url: "testing/testing-views"
-  - title: "Testing Models"
-    url: "testing/testing-models"
-  # - title: "Testing XHR"
-  #   url: "testing/testing-xhr"
-  - title: "Automating Tests with Runners"
-    url: "testing/test-runners"
 
 Configuring Ember.js:
   - title: "Disabling Prototype Extensions"
@@ -359,12 +330,6 @@ Cookbook:
   - title: "Creating Reusable Social Share Buttons"
     url: "cookbook/helpers_and_components/creating_reusable_social_share_buttons"
     skip_sidebar_item: true
-  - title: "A Spinning Button for Asynchronous Actions"
-    url: "cookbook/helpers_and_components/spin_button_for_asynchronous_actions"
-    skip_sidebar_item: true
-  - title: "Adding Google Analytics Tracking"
-    url: "cookbook/helpers_and_components/adding_google_analytics_tracking"
-    skip_sidebar_item: true
   # objects
   - title: "Working with Objects"
     url: "cookbook/working_with_objects"
@@ -393,10 +358,6 @@ Cookbook:
   #   url: "cookbook/debugging_and_configuration/setting_ember_global_flags"
   #   skip_sidebar_item: true
 
-Deprecations:
-  - title: "Deprecations"
-    url: "deprecations"
-
 Understanding Ember.js:
   - title: "The View Layer"
     url: "understanding-ember/the-view-layer"
@@ -408,8 +369,6 @@ Understanding Ember.js:
     url: "understanding-ember/debugging"
   - title: "The Run Loop"
     url: "understanding-ember/run-loop"
-  - title: "Dependency Injection & Service Lookup"
-    url: "understanding-ember/dependency-injection-and-service-lookup"
 
 Contributing to Ember.js:
   - title: "Adding New Features"
@@ -420,3 +379,4 @@ Contributing to Ember.js:
 #Understanding Ember Data:
   #- title: "Record Lifecycle"
     #url: "understanding-ember-data/record-lifecycle"
+

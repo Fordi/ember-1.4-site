@@ -4,8 +4,8 @@ For example, imagine you are frequently wrapping certain values in a `<span>` ta
 
 ```javascript
 Ember.Handlebars.helper('highlight', function(value, options) {
-  var escaped = Ember.Handlebars.Utils.escapeExpression(value);
-  return new Ember.Handlebars.SafeString('<span class="highlight">' + escaped + '</span>');
+  var escaped = Handlebars.Utils.escapeExpression(value);
+  return new Handlebars.SafeString('<span class="highlight">' + escaped + '</span>');
 });
 ```
 
@@ -76,5 +76,5 @@ Which is functionally equivalent to, and accepts all the same
 arguments as:
 
 ```handlebars
-{{view "calendar"}}
+{{view App.CalendarView}}
 ```

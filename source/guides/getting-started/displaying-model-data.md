@@ -18,25 +18,25 @@ Now that we need custom behavior (returning a specific set of models), we implem
 Update `index.html` to replace the static `<li>` elements with a Handlebars `{{each}}` helper and a dynamic `{{title}}` for each item.
 
 ```handlebars
-{{! ... additional lines truncated for brevity ... }}
+<!--- ... additional lines truncated for brevity ... -->
 <ul id="todo-list">
-  {{#each todo in model}}
+  {{#each}}
     <li>
       <input type="checkbox" class="toggle">
-      <label>{{todo.title}}</label><button class="destroy"></button>
+      <label>{{title}}</label><button class="destroy"></button>
     </li>
   {{/each}}
 </ul>
-{{! ... additional lines truncated for brevity ... }}
+<!--- ... additional lines truncated for brevity ... -->
 ```
 
-Ember.js has created a controller for us and set the controller's `model` property to our route's model. The template loops over the controller's `model` property. Because we don't need custom behavior for this controller yet, we can use the default object provided by the framework.
+The template loops over the content of its controller. This controller is an instance of `ArrayController` that Ember.js has provided for us as the container for our models. Because we don't need custom behavior for this object yet, we can use the default object provided by the framework.
 
 Reload your web browser to ensure that all files have been referenced correctly and no errors occur.
 
 ### Live Preview
-<a class="jsbin-embed" href="http://jsbin.com/simixi/1/embed?output">Ember.js • TodoMVC</a><script src="http://static.jsbin.com/js/embed.js"></script>
-
+<a class="jsbin-embed" href="http://jsbin.com/EJISAne/1/embed?live">Ember.js • TodoMVC</a><script src="http://static.jsbin.com/js/embed.js"></script>
+  
 ### Additional Resources
 
   * [Changes in this step in `diff` format](https://github.com/emberjs/quickstart-code-sample/commit/87bd57700110d9dd0b351c4d4855edf90baac3a8)

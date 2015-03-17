@@ -106,7 +106,7 @@ module TOC
       if section_slug == guide_slug
         return "#{base_guide_url}/#{current_guide['url']}/index.md"
       else
-        return "#{base_guide_url}/#{current_guide['url'].gsub(/.html/, '')}.md"
+        return "#{base_guide_url}/#{current_guide['url']}.md"
       end
     end
 
@@ -272,6 +272,15 @@ module TOC
             <h3>
               <div class="msg">
                 WARNING: this guide refers to a feature only available in canary (nightly/unstable) builds of Ember Data.
+              </div>
+            </h3>
+          </div>
+        },
+        "query-params-warning"=> %Q{
+          <div class="under_construction_warning">
+            <h3>
+              <div class="msg">
+                <strong>WARNING:</strong> query params are an experimental feature. You must be using a recent canary build of Ember, and enable the <code>query-params-new</code> feature flag. For more info on enabling feature flags visit <a href="http://emberjs.com/guides/configuring-ember/feature-flags/">the Feature Flags guide</a>
               </div>
             </h3>
           </div>

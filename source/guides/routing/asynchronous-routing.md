@@ -67,8 +67,10 @@ arrays, the transition will complete immediately. But if the `model` hook
 if a promise was provided as an argument to `transitionTo`), the transition 
 will pause until that promise fulfills or rejects.
 
+<aside>
 **Note:** The router considers any object with a `then` method
 defined on it to be a promise.
+</aside>
 
 If the promise fulfills, the transition will pick up where it left off and
 begin resolving the next (child) route's model, pausing if it too is a
@@ -161,7 +163,7 @@ App.FunkyRoute = Ember.Route.extend({
 });
 ```
 
-### beforeModel and afterModel
+### `beforeModel` and `afterModel`
 
 The `model` hook covers many use cases for pause-on-promise transitions,
 but sometimes you'll need the help of the related hooks `beforeModel`
@@ -219,9 +221,9 @@ depends on the fully resolved value of a model.
 ```js
 App.ArticlesRoute = Ember.Route.extend({
   model: function() {
-    // `this.store.find('article')` returns a promise-like object
+    // App.Article.find() returns a promise-like object
     // (it has a `then` method that can be used like a promise)
-    return this.store.find('article');
+    return App.Article.find();
   },
   afterModel: function(articles) {
     if (articles.get('length') === 1) {
